@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Alarm</title>
+    <link rel="stylesheet" href="./style.css?v=1">
+    <link rel="shortcut icon" href="./favicon.ico">
+    <meta name="robots" content="noindex, nofollow">
+</head>
+<body>
+    <main>
+        <h1>Trading Alarm</h1>
+
+        <!-- London Session -->
+        <div class="session">
+            <button class="toggle-btn" id="londonToggle" onclick="toggleSection('londonSection')">London Killzone</button>
+            <div id="londonSection" class="hidden">
+                <div class="alarm-time">
+                    <label for="london-0915">9:15</label> <input type="checkbox" id="london-0915" onclick="setAlarm('09:14:30', 'london-0915')">
+                </div>
+                <div class="alarm-time">
+                    <label for="london-0930">9:30</label> <input type="checkbox" id="london-0930" onclick="setAlarm('09:29:30', 'london-0930')">
+                </div>
+                <div class="alarm-time">
+                    <label for="london-0945">9:45</label> <input type="checkbox" id="london-0945" onclick="setAlarm('09:44:30', 'london-0945')">
+                </div>
+                <div class="alarm-time">
+                    <label for="london-1000">10:00</label> <input type="checkbox" id="london-1000" onclick="setAlarm('09:59:30', 'london-1000')">
+                </div>
+                <div class="alarm-time">
+                    <label for="london-1015">10:15</label> <input type="checkbox" id="london-1015" onclick="setAlarm('10:14:30', 'london-1015')">
+                </div>
+                <div class="alarm-time">
+                    <label for="london-1030">10:30</label> <input type="checkbox" id="london-1030" onclick="setAlarm('10:29:30', 'london-1030')">
+                </div>
+                <div class="alarm-time">
+                    <label for="london-1045">10:45</label> <input type="checkbox" id="london-1045" onclick="setAlarm('10:44:30', 'london-1045')">
+                </div>
+            </div>
+        </div>
+
+        <!-- New York Session -->
+        <div class="session">
+            <button class="toggle-btn" id="nyToggle" onclick="toggleSection('nySession')">New York Killzone</button>
+            <div id="nySession" class="hidden">
+                <div class="alarm-time">
+                    <label for="ny-1415">14:15</label> <input type="checkbox" id="ny-1415" onclick="setAlarm('14:14:30', 'ny-1415')">
+                </div>
+                <div class="alarm-time">
+                    <label for="ny-1430">14:30</label> <input type="checkbox" id="ny-1430" onclick="setAlarm('14:29:30', 'ny-1430')">
+                </div>
+                <div class="alarm-time">
+                    <label for="ny-1445">14:45</label> <input type="checkbox" id="ny-1445" onclick="setAlarm('14:44:30', 'ny-1445')">
+                </div>
+                <div class="alarm-time">
+                    <label for="ny-1500">15:00</label> <input type="checkbox" id="ny-1500" onclick="setAlarm('14:59:30', 'ny-1500')">
+                </div>
+                <div class="alarm-time">
+                    <label for="ny-1515">15:15</label> <input type="checkbox" id="ny-1515" onclick="setAlarm('15:14:30', 'ny-1515')">
+                </div>
+                <div class="alarm-time">
+                    <label for="ny-1530">15:30</label> <input type="checkbox" id="ny-1530" onclick="setAlarm('15:29:30', 'ny-1530')">
+                </div>
+                <div class="alarm-time">
+                    <label for="ny-1545">15:45</label> <input type="checkbox" id="ny-1545" onclick="setAlarm('15:44:30', 'ny-1545')">
+                </div>
+                <div class="alarm-time">
+                    <label for="ny-1600">16:00</label> <input type="checkbox" id="ny-1600" onclick="setAlarm('15:59:30', 'ny-1600')">
+                </div>
+                <div class="alarm-time">
+                    <label for="ny-1615">16:15</label> <input type="checkbox" id="ny-1615" onclick="setAlarm('16:14:30', 'ny-1615')">
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Function to toggle the session sections
+        function toggleSection(id) {
+            const section = document.getElementById(id);
+            section.classList.toggle('hidden');
+        }
+
+        // Function to set alarms
+        function setAlarm(time, id) {
+            const checkbox = document.getElementById(id);
+            if (checkbox.checked) {
+                const alarmTime = new Date();
+                const [hours, minutes, seconds] = time.split(':');
+                alarmTime.setHours(hours, minutes, seconds, 0);
+                
+                const now = new Date();
+                let timeout = alarmTime.getTime() - now.getTime();
+                if (timeout < 0) {
+                    timeout += 24 * 60 * 60 * 1000; // Schedule for next day if time has passed today
+                }
+
+                checkbox.alarm = setTimeout(() => {
+                    triggerAlarm(time);
+                }, timeout);
+            } else {
+                clearTimeout(checkbox.alarm);
+            }
+        }
+
+        // Function to trigger the alarm with sound, alert box, and notification
+        function triggerAlarm(time) {
+            // Show an alert box
+            alert(`Alarm for ${time} is ringing!`);
+
+            // Play a sound
+            const audio = new Audio('https://www.soundjay.com/buttons/button-09a.wav');
+            audio.play();
+
+            // Browser notification
+            if (Notification.permission === "granted") {
+                new Notification(`Alarm for ${time} is ringing!`);
+            } else if (Notification.permission !== "denied") {
+                Notification.requestPermission().then(permission => {
+                    if (permission === "granted") {
+                        new Notification(`Alarm for ${time} is ringing!`);
+                    }
+                });
+            }
+        }
+
+        // Automatically open the correct session based on time
+        window.onload = function() {
+            const now = new Date();
+            const hours = now.getHours();
+
+            if (hours < 12) {
+                document.getElementById('londonSession').classList.remove('hidden');
+            } else {
+                document.getElementById('nySession').classList.remove('hidden');
+            }
+        }
+    </script>
+
+</body>
+</html>

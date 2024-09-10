@@ -106,10 +106,7 @@
 
         // Function to trigger the alarm with sound, alert box, and notification
         function triggerAlarm(time) {
-            // Show an alert box
-            alert(`Alarm for ${time} is ringing!`);
-
-            // Play a sound
+            // Play the sound first
             const audio = new Audio('https://www.soundjay.com/buttons/button-09a.wav');
             audio.play();
 
@@ -123,6 +120,11 @@
                     }
                 });
             }
+
+            // After a short delay, show the alert box
+            setTimeout(() => {
+                alert(`Alarm for ${time} is ringing!`);
+            }, 500);  // 500 ms delay to allow the sound to play first
         }
 
         // Automatically open the correct session based on time

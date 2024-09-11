@@ -78,17 +78,17 @@
 
     <script>
         if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('./service-worker.js')
+            navigator.serviceWorker.register('./service-worker.js')
             .then(function(registration) {
-              console.log('Service Worker registered with scope:', registration.scope);
+                console.log('Service Worker registered with scope:', registration.scope);
             })
             .catch(function(error) {
-              console.log('Service Worker registration failed:', error);
+                console.log('Service Worker registration failed:', error);
             });
         }
 
         if (Notification.permission !== 'granted') {
-          Notification.requestPermission();
+            Notification.requestPermission();
         }
 
         // Function to toggle the session sections
@@ -121,7 +121,7 @@
 
         // Function to trigger the alarm with sound, alert box, and notification
         function triggerAlarm(time) {
-             // Play the sound first
+            // Play the sound first
             const audio = new Audio('https://www.soundjay.com/buttons/button-09a.wav');
             audio.play();
 

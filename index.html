@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="./style.css?v=1">
     <link rel="shortcut icon" href="./favicon.ico">
     <meta name="robots" content="noindex, nofollow">
+    <link rel="manifest" href="./manifest.json">
 </head>
 <body>
     <main>
@@ -76,6 +77,20 @@
     </main>
 
     <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./service-worker.js')
+            .then(function(registration) {
+                console.log('Service Worker registered with scope:', registration.scope);
+            })
+            .catch(function(error) {
+                console.log('Service Worker registration failed:', error);
+            });
+        }
+
+        if (Notification.permission !== 'granted') {
+            Notification.requestPermission();
+        }
+
         // Function to toggle the session sections
         function toggleSection(id) {
             const section = document.getElementById(id);

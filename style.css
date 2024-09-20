@@ -17,6 +17,7 @@ body {
 	margin: 0;
 	padding: 0;
 	font-size: 1.4rem;
+	height: 100vh;
 }
 
 main {
@@ -64,11 +65,27 @@ input[type=checkbox] {
 	height: 1.2rem;
 }
 
+.flash-red {
+  animation: flashRed 1s infinite alternate;
+}
+
+@keyframes flashRed {
+  0% {
+    background-color: red;
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
 
 /* Styles for light mode */
 @media (prefers-color-scheme: light) {
-	body {
+	html {
 		background-color: var(--color-white);
+	}
+
+	body {
 		color: var(--color-gray);
 	}
 
@@ -89,8 +106,11 @@ input[type=checkbox] {
 
 /* Styles for dark mode */
 @media (prefers-color-scheme: dark) {
-	body {
+	html {
 		background-color: var(--color-gray);
+	}
+
+	body {
 		color: var(--color-white);
 	}
 

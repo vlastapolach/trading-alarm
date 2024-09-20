@@ -108,23 +108,24 @@
         function triggerAlarm(time) {
             // Play the sound first
             const audio = new Audio('https://www.soundjay.com/buttons/button-09a.wav');
-            audio.play();        
+            audio.play();
 
-            // After a short delay, show the alert box
+            document.body.classList.add('flash-red');
+
             setTimeout(() => {
-                // Browser notification
-                if (Notification.permission === "granted") {
-                    new Notification(`Alarm for ${time} is ringing!`);
-                } else if (Notification.permission !== "denied") {
-                    Notification.requestPermission().then(permission => {
-                        if (permission === "granted") {
-                            new Notification(`Alarm for ${time} is ringing!`);
-                        }
-                    });
-                }
-                
-                alert(`Alarm for ${time} is ringing!`);
-            }, 1000);  // 1000 ms delay to allow the sound to play first
+                document.body.classList.remove('flash-red');
+            }, 10000);  // 10000 ms delay to remove the flashing animation
+
+            // Browser notification
+            if (Notification.permission === "granted") {
+                new Notification(`Alarm for ${time} is ringing!`);
+            } else if (Notification.permission !== "denied") {
+                Notification.requestPermission().then(permission => {
+                    if (permission === "granted") {
+                        new Notification(`Alarm for ${time} is ringing!`);
+                    }
+                });
+            }
         }
 
         // Automatically open the correct session based on time
